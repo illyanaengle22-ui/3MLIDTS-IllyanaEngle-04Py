@@ -1,5 +1,6 @@
 ﻿import tkinter as tk
 from tkinter import messagebox
+import re
 ##Definicion de funciones
 def limpiar_campos():
     txtNombre.delete(0,tk.END)
@@ -27,20 +28,42 @@ def guardar_valores():
     elif var_genero.get() == 2:
         genero = "Mujer"
 
-    ## Generar la cadena de caracteres
-    datos = "Nombre: "+ nombres +"\n"+"Apellidos: "+ apellidos +"\n"+"Edad: "+ edad +" anos\n"+"Estatura: "+ estatura +"\n"+"Telefono: "+ telefono +"\n"+"Genero: " +genero
-    ## Guardar los datos en el archivo TXT
-    with open("D:/Users/Neko/Documents/Programacion_Avanzada/3MDatosAgosto2025Python.txt", "a") as archivo:
-        archivo.write(datos+"\n\n")
-    ## Mostrar mensaje de confirmacion
-    messagebox.showinfo("Informacion", "Datos guardados con exito: \n\n"+datos)
-    txtNombre.delete(0,tk.END)
-    txtApellidos.delete(0,tk.END)
-    txtTelefono.delete(0,tk.END)
-    txtEdad.delete(0,tk.END)
-    txtEstatura.delete(0,tk.END)
-    var_genero.set(0)
+    # validar que los campos tengan el formato correcto
+    if(es_entero_valido(edad)) and es_decimal_valido(estatura) and es_entero_valido_de_10_digitos(telefono) and es_texto_valido(nombres) and es_texto_valido(apellidos):
+        ## Generar la cadena de caracteres
+        datos = "Nombre: "+ nombres +"\n"+"Apellidos: "+ apellidos +"\n"+"Edad: "+ edad +" anos\n"+"Estatura: "+ estatura +"\n"+"Telefono: "+ telefono +"\n"+"Genero: " +genero
+        ## Guardar los datos en el archivo TXT
+        with open("D:/Users/Neko/Documents/Programacion_Avanzada/3MDatosAgosto2025Python.txt", "a") as archivo:
+            archivo.write(datos+"\n\n")
+        ## Mostrar mensaje de confirmacion
+        messagebox.showinfo("Informacion", "Datos guardados con exito: \n\n"+datos)
+        
+        #limpiar los controles despues de guardar
+        limpiar_campos()
+    else:
+        messagebox.showerror("Error","Por favos, ingrese datos validos en los campos")
 
+   
+
+def es_entero_valido(valor):
+    try:
+        int(valor)
+        return True
+    except ValueError:
+        return False
+
+def es_decimal_valido(valor):
+    try:
+        float(valor)
+        return True
+    except ValueError:
+        return False
+
+def es_entero_valido_de_10_digitos(valor):
+    return valor.isdigit() and len(valor) == 10
+
+def es_texto_valido(valor):
+    return bool(re.match("^[a-zA-Z\s]+$"), valor)
 ##Creacion de ventana
 ventana = tk.Tk()
 ventana.geometry("320x350")
