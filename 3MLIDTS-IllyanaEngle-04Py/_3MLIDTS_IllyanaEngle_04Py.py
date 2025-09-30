@@ -1,4 +1,4 @@
-import tkinter as tk
+﻿import tkinter as tk
 from tkinter import messagebox
 ##Definicion de funciones
 def limpiar_campos():
@@ -20,6 +20,7 @@ def guardar_valores():
     estatura = txtEstatura.get()
     ##Obtener el genero de los RadioButtons
 
+   
     genero = ""
     if var_genero.get() == 1:
         genero = "Hombre"
